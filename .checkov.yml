@@ -16,3 +16,7 @@ skip-check:
   # DEFERRED, not accepted: module needs a logging_target_bucket
   # variable. Remove this skip when implemented.
   - CKV_AWS_18
+skip-path:
+  # Deliberately non-compliant Terraform used to test custom Rego
+  # rules. Excluded from the infra scan because it exists to fail.
+  - policy/fixtures
