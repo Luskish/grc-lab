@@ -119,46 +119,23 @@ readable JSON.
 > they are appropriately configured to limit inbound and outbound network
 > traffic.
 
-**Grade:** Partial
+**Grade:** Partial (improved 2026-08-XX)
 
-**Related SP 800-53 controls:** AC-17(03), CA-09, CM-07(01), SC-07(05), SI-08
+**Implementation** (added)
+Automated static analysis gate: Checkov 3.3.10 and Trivy run on every
+pull request via GitHub Actions, enforced as required status checks on
+`main`. Non-compliant infrastructure definitions cannot be merged.
 
-### Implementation
+**Gap** (revised)
+Analysis is now automated, versioned, and non-bypassable, and it runs on
+every change rather than on operator initiative. Two gaps remain:
 
-`modules/compliant-bucket/main.tf` provisions
-`aws_s3_bucket_public_access_block` with all four settings enabled:
-
-| Setting | Effect |
-|---|---|
-| `block_public_acls` | Prevents new public ACLs |
-| `ignore_public_acls` | Neutralizes existing public ACLs |
-| `block_public_policy` | Prevents new public bucket policies |
-| `restrict_public_buckets` | Neutralizes existing public policies |
-
-Two settings prevent future misconfiguration; two neutralize prior
-misconfiguration. All four are required for complete coverage.
-
-The module exposes no variable to disable this. A non-compliant bucket
-cannot be produced through the paved path.
-
-### Gap
-
-Configuration is correct and enforced at deploy time. **The indicator
-requires machine-based information resources to be persistently reviewed**,
-and no such review exists:
-
-- Validation has been performed twice, manually, by an operator
-- No scheduled job evaluates live resource configuration
-- Status of the control between reviews is unknown
-
-Per the FedRAMP definition, persistent activities may be irregular and may
-include gaps, but must be intentional, documented, and their status always
-known. None of those hold here.
-
-Additionally, review must target the **running resources**, not the IaC
-that produced them. AWS applies Block Public Access by default on new
-buckets; a review of Terraform source would not detect a resource whose
-live configuration diverged from code.
+1. Static analysis evaluates *code*, not *running resources*. A resource
+   whose live configuration diverges from its definition is not detected.
+   The indicator concerns machine-based information resources.
+2. Vendor rule sets do not encode organizational policy. Approved regions,
+   required classification tags, and force_destroy restrictions pass
+   unflagged. Custom Rego is planned for this project.
 
 ### Remediation
 
