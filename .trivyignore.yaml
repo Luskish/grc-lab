@@ -1,0 +1,9 @@
+misconfigurations:
+  - id: AWS-0132
+    statement: |
+      Bucket encryption uses SSE-S3 (AES256) rather than a customer
+      managed KMS key. Accepted for this lab: AES256 provides
+      encryption at rest. CMKs add key custody, rotation, and
+      CloudTrail auditability, which are production requirements.
+      Tracked in CONTROLS.md under KSI-SVC-SIN as a named gap.
+      Equivalent to CKV_AWS_145 in .checkov.yml.
