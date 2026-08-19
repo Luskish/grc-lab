@@ -42,4 +42,4 @@ jobs:
           sudo apt-get install -y trivy
 
       - name: Run Trivy
-        run: trivy config . --exit-code 1 --severity HIGH,CRITICAL --ignorefile .trivyignore.yaml
+        run: trivy config . --exit-code 1 --severity HIGH,CRITICAL --ignorefile .trivyignore.yaml --skip-dirs policy/fixtures
