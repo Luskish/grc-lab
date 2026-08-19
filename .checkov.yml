@@ -1,0 +1,18 @@
+directory:
+  - .
+compact: true
+quiet: true
+
+skip-check:
+  # N/A: lab has no availability requirement or data of value
+  - CKV_AWS_144
+  # N/A: ephemeral lab, destroyed each session
+  - CKV2_AWS_61
+  # N/A: no event-driven consumers
+  - CKV2_AWS_62
+  # Accepted: AES256 encrypts at rest. KMS adds custody/rotation,
+  # a production requirement. Tracked in CONTROLS.md.
+  - CKV_AWS_145
+  # DEFERRED, not accepted: module needs a logging_target_bucket
+  # variable. Remove this skip when implemented.
+  - CKV_AWS_18
